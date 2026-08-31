@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>A Little Surprise Made Just for Sahl ❤️</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #800020 0%, #b0003a 50%, #4a0013 100%);
+      --card-bg: rgba(255, 255, 255, 0.12);
+      --card-border: rgba(255, 255, 255, 0.25);
+      --text-gold: #ffeb3b;
+      --text-white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      user-select: none;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-white);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    /* Floating Hearts Animation Background */
+    .hearts-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .heart-particle {
+      position: absolute;
+      bottom: -10%;
+      font-size: 1.2rem;
+      color: rgba(255, 182, 193, 0.6);
+      animation: floatUp 6s linear infinite;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(0.8); opacity: 0.8; }
+      100% { transform: translateY(-110vh) scale(1.3); opacity: 0; }
+    }
+
+    /* Container Utama HP Mode */
+    .app-container {
+      width: 100%;
+      max-width: 420px;
+      min-height: 100vh;
+      background: rgba(0, 0, 0, 0.15);
+      position: relative;
+      z-index: 1;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Section Control */
+    .screen {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      animation: fadeIn 0.6s ease-in-out forwards;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Tombol Utama */
+    .btn-action {
+      background: rgba(255, 255, 255, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      padding: 12px 30px;
+      border-radius: 30px;
+      color: #fff;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      margin-top: 15px;
+    }
+
+    .btn-action:hover {
+      background: rgba(255, 255, 255, 0.4);
+      transform: scale(1.05);
+    }
+
+    .open-box {
+      margin-top: 70%;
+    }
+
+    .title-large {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      color: var(--text-gold);
+      margin-top: 50%;
+      line-height: 1.3;
+    }
+
+    .sub-title {
+      font-size: 0.85rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      opacity: 0.8;
+      margin-top: 20px;
+    }
+
+    .main-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.3rem;
+      color: var(--text-gold);
+      margin-bottom: 5px;
+    }
+
+    .card-letter {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 20px;
+      margin-top: 20px;
+      text-align: left;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      max-height: 380px;
+      overflow-y: auto;
+    }
+
+    .card-letter p {
+      margin-bottom: 12px;
+    }
+
+    .grid-reasons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .reason-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(8px);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: left;
+    }
+
+    .reason-card i {
+      font-size: 1.4rem;
+      color: var(--text-gold);
+      margin-bottom: 6px;
+    }
+
+    .reason-card h4 {
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+    }
+
+    .reason-card p {
+      font-size: 0.72rem;
+      opacity: 0.9;
+    }
+
+    /* GALERI FOTO KUSTOM */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+      margin-top: 15px;
+    }
+
+    .gallery-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .gallery-img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .gallery-img:hover {
+      transform: scale(1.03);
+    }
+
+    .caption-text {
+      font-size: 0.68rem;
+      margin-top: 6px;
+      opacity: 0.9;
+      font-style: italic;
+    }
+
+    .modal-img {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 99;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-img img {
+      max-width: 90%;
+      max-height: 80vh;
+      border-radius: 12px;
+    }
+
+    .candle-container {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .flame {
+      width: 16px;
+      height: 26px;
+      background: orange;
+      border-radius: 50% 50% 20% 20%;
+      box-shadow: 0 0 15px orange, 0 0 30px yellow;
+      animation: flicker 0.1s infinite alternate;
+      margin-bottom: 2px;
+    }
+
+    .flame.off {
+      display: none;
+    }
+
+    @keyframes flicker {
+      from { transform: scale(1); }
+      to { transform: scale(1.1); }
+    }
+
+    .candle {
+      width: 28px;
+      height: 90px;
+      background: #ffffff;
+      border-radius: 4px;
+      box-shadow: inset 0 0 8px #ccc;
+    }
+
+    .audio-control {
+      position: fixed;
+      bottom: 15px;
+      right: 15px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      z-index: 10;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hearts-container" id="hearts-bg"></div>
+
+  <audio id="bg-music" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73323.mp3?filename=happy-birthday-15243.mp3" type="audio/mp3" />
+  </audio>
+
+  <div class="audio-control" onclick="toggleAudio()">
+    <i class="fa-solid fa-music" id="music-icon"></i> <span id="music-text">Play</span>
+  </div>
+
+  <div class="app-container">
+
+    <!-- STEP 1 -->
+    <div class="screen active" id="screen-1">
+      <div class="open-box">
+        <button class="btn-action" onclick="goToScreen(2)">OPEN ❤️</button>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="screen" id="screen-2">
+      <h1 class="title-large">A Little Surprise<br/>Made Just for You</h1>
+      <p style="margin-top: 15px; font-size: 0.8rem; opacity: 0.8;">KLIK UNTUK MULAI</p>
+      <button class="btn-action" onclick="goToScreen(3)"><i class="fa-solid fa-heart"></i></button>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="screen" id="screen-3">
+      <p class="sub-title">CELEBRATING</p>
+      <h2 class="main-name">Sahl</h2>
+      <p style="font-size: 0.8rem; opacity: 0.9;">Semoga kamu bahagia, hari ini dan seterusnya</p>
+
+      <button class="btn-action" id="btn-surat" onclick="openSurat()"><i class="fa-regular fa-envelope"></i> BUKA SURAT</button>
+
+      <div class="card-letter" id="letter-body" style="display: none;">
+        <h3 style="color: var(--text-gold); margin-bottom: 10px;">Happy Birthday Sayangku, Sahl 🌹</h3>
+        <p>Selamat bertambah usia yaa 💕</p>
+        <p>Di usia kamu yang sekarang, aku harap kamu selalu dikelilingi hal-hal baik, dipermudah setiap langkahnya, dan diberi kebahagiaan yang tiada habisnya.</p>
+        <p>Terimakasih sudah hadir di kehidupanku, sudah jadi orang yang selalu ada di saat senang maupun susah. Senyum kamu, kebaikan kamu, dan setiap momen bersamamu selalu berhasil bikin hari-hariku terasa istimewa.</p>
+        <p>Aku berharap di umur kamu yang baru ini, semua yang kamu impikan bisa satu per satu terwujud. Semoga kamu selalu kuat, tetap jadi Sahl yang baik, dan jangan pernah kehilangan semangat ya.</p>
+        <p style="font-size: 0.8rem; opacity: 0.8; margin-top: 15px;">Scroll terus yaa, ada sesuatu buat kamu 👇</p>
+        
+        <button class="btn-action" style="width: 100%; margin-top: 10px;" onclick="goToScreen(4)">Lanjut <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="screen" id="screen-4">
+      <h2 style="font-family: 'Playfair Display', serif; color: var(--text-gold);">Things I Like About You</h2>
+      <p style="font-size: 0.8rem; opacity: 0.8;">Hal kecil yang buat kamu lebih istimewa</p>
+
+      <div class="grid-reasons">
+        <div class="reason-card">
+          <i class="fa-regular fa-face-smile"></i>
+          <h4>Senyum Kamu</h4>
+          <p>Senyum kamu selalu punya cara buat bikin hari aku jadi lebih terang.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa-solid fa-user-astronaut"></i>
+          <h4>Jadi Diri Sendiri</h4>
+          <p>Aku suka kamu yang apa adanya. Nggak perlu jadi orang lain.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa-solid fa-hand-holding-heart"></i>
+          <h4>Cara Kamu Peduli</h4>
+          <p>Perhatian kecil dari kamu selalu berhasil bikin hati aku hangat.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa-solid fa-seedling"></i>
+          <h4>Semangat Kamu</h4>
+          <p>Lihat kamu terus berusaha bikin aku ikut semangat.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa-solid fa-gem"></i>
+          <h4>Kamu Apa Adanya</h4>
+          <p>Buat aku, kamu udah istimewa tanpa perlu berubah sedikit pun.</p>
+        </div>
+        <div class="reason-card">
+          <i class="fa-solid fa-heart"></i>
+          <h4>Kebaikan Kamu</h4>
+          <p>Kamu baik dengan cara yang sederhana, dan itu yang paling aku suka.</p>
+        </div>
+      </div>
+
+      <button class="btn-action" style="margin-top: 20px;" onclick="goToScreen(5)">Lihat Galeri Foto <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="screen" id="screen-5">
+      <h2 style="font-family: 'Playfair Display', serif; color: var(--text-gold);">Photo Gallery</h2>
+      <p style="font-size: 0.8rem; opacity: 0.8; margin-bottom: 10px;">Momen-momen indah bersama Sahl</p>
+
+      <div class="gallery-grid">
+        <div class="gallery-card">
+          <img src="foto1.jpg" class="gallery-img" onclick="previewImage(this.src)"/>
+          <p class="caption-text">A little moment I want to remember ♡</p>
+        </div>
+        <div class="gallery-card">
+          <img src="foto2.jpg" class="gallery-img" onclick="previewImage(this.src)"/>
+          <p class="caption-text">One of the many memories worth keeping ♡</p>
+        </div>
+        <div class="gallery-card">
+          <img src="foto3.jpg" class="gallery-img" onclick="previewImage(this.src)"/>
+          <p class="caption-text">You make ordinary moments feel special ♡</p>
+        </div>
+        <div class="gallery-card">
+          <img src="foto4.jpg" class="gallery-img" onclick="previewImage(this.src)"/>
+          <p class="caption-text">And this is why today is worth celebrating ♡</p>
+        </div>
+      </div>
+
+      <button class="btn-action" style="margin-top: 20px;" onclick="goToScreen(6)">Saatnya Berdoa ✨</button>
+    </div>
+
+    <!-- STEP 6 -->
+    <div class="screen" id="screen-6">
+      <h2 style="font-family: 'Playfair Display', serif; color: var(--text-gold);">Saatnya Berdoa</h2>
+      <p style="font-size: 0.82rem; opacity: 0.9; margin: 15px 0; line-height: 1.5;">
+        Sebelum tiup lilinnya, ucapin semua harapan yang kamu simpan diam-diam. Semoga Tuhan ngabulin semuanya... dan semoga senyum kamu selalu jadi bagian paling indah di setiap harinya.
+      </p>
+      
+      <p style="font-size: 0.75rem; color: var(--text-gold);" id="pray-status">Klik tombol untuk mulai berdoa</p>
+
+      <button class="btn-action" id="btn-pray" onclick="startPray()">MULAI BERDOA 🙏</button>
+
+      <div class="candle-container" id="candle-box" style="display: none;">
+        <div class="flame" id="flame"></div>
+        <div class="candle"></div>
+        <button class="btn-action" style="margin-top: 20px;" onclick="blowCandle()">TIUP LILIN 🎂</button>
+      </div>
+    </div>
+
+    <!-- STEP 7 -->
+    <div class="screen" id="screen-7">
+      <h1 style="font-family: 'Playfair Display', serif; color: var(--text-gold); font-size: 2.2rem; margin-top: 40px;">Happy Birthday<br/>Sahl ❤️</h1>
+      
+      <div class="card-letter" style="margin-top: 20px; text-align: center;">
+        <p><i>best wishes for special people.</i></p>
+        <p>Maaf nggak bisa merayakan langsung di hadapanmu, tapi do'aku tulus semoga semesta selalu berpihak ke kamu 💐✨🎉</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="modal-img" id="imgModal" onclick="this.style.display='none'">
+    <img id="modalImgTarget" src="" />
+  </div>
+
+  <script>
+    const heartsContainer = id('hearts-bg');
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart-particle');
+      heart.innerHTML = '❤️';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = Math.random() * 3 + 4 + 's';
+      heart.style.fontSize = Math.random() * 15 + 10 + 'px';
+      heartsContainer.appendChild(heart);
+      setTimeout(() => heart.remove(), 7000);
+    }
+    setInterval(createHeart, 300);
+
+    function id(elemId) { return document.getElementById(elemId); }
+
+    function goToScreen(screenNum) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      id(`screen-${screenNum}`).classList.add('active');
+    }
+
+    const music = id('bg-music');
+    const musicIcon = id('music-icon');
+    const musicText = id('music-text');
+    let isPlaying = false;
+
+    function toggleAudio() {
+      if (isPlaying) {
+        music.pause();
+        musicIcon.className = 'fa-solid fa-music';
+        musicText.innerText = 'Play';
+      } else {
+        music.play();
+        musicIcon.className = 'fa-solid fa-pause';
+        musicText.innerText = 'Pause';
+      }
+      isPlaying = !isPlaying;
+    }
+
+    function openSurat() {
+      id('btn-surat').style.display = 'none';
+      id('letter-body').style.display = 'block';
+    }
+
+    function previewImage(src) {
+      id('modalImgTarget').src = src;
+      id('imgModal').style.display = 'flex';
+    }
+
+    function startPray() {
+      id('btn-pray').style.display = 'none';
+      id('pray-status').innerText = 'SEDANG BERDO'A...';
+      
+      setTimeout(() => {
+        id('pray-status').style.display = 'none';
+        id('candle-box').style.display = 'flex';
+      }, 3000);
+    }
+
+    function blowCandle() {
+      id('flame').classList.add('off');
+      
+      confetti({
+        particleCount: 120,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+
+      setTimeout(() => {
+        goToScreen(7);
+        confetti({
+          particleCount: 200,
+          spread: 100,
+          origin: { y: 0.4 }
+        });
+      }, 1500);
+    }
+  </script>
+</body>
+</html>
